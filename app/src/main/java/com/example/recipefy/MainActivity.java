@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerbtn.setOnClickListener(this);
         loginbtn = findViewById(R.id.login_btn);
         loginbtn.setOnClickListener(this);
+
+
 
 
     }
