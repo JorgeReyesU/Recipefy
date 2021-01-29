@@ -9,9 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Recipefy">
+        <activity android:name=".forgotpassword_activity"></activity>
         <activity
             android:name=".MainMenu"
-            android:label="@string/title_activity_main_menu"></activity>
+            android:label="@string/title_activity_main_menu" />
         <activity android:name=".login_activity" />
         <activity android:name=".register_activity" />
         <activity android:name=".MainActivity">

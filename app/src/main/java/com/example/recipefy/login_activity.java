@@ -10,18 +10,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.regex.Pattern;
 
 public class login_activity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextEmail, editTextPassword;
+    private TextView forgotP;
     Button logInBtn;
     private FirebaseAuth mAuth;
 
@@ -34,6 +37,9 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
 
         logInBtn = (Button) findViewById(R.id.loginActi);
         logInBtn.setOnClickListener(this);
+
+        forgotP = (TextView) findViewById(R.id.textViewForgotPassword);
+        forgotP.setOnClickListener(this);
 
         editTextEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         editTextPassword = (EditText) findViewById(R.id.editTextTextPassword);
@@ -49,6 +55,9 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()){
             case R.id.loginActi:
                 userLogin();
+                break;
+            case R.id.textViewForgotPassword:
+                startActivity(new Intent(login_activity.this,  forgotpassword_activity.class));
                 break;
         }
     }
@@ -79,10 +88,15 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                if(task.isSuccessful()){
-                    startActivity(new Intent(login_activity.this,  MainMenu.class));
-
-                }else {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user.isEmailVerified()) {
+                        startActivity(new Intent(login_activity.this, MainMenu.class));
+                    } else {
+                        user.sendEmailVerification();
+                        Toast.makeText(login_activity.this, "Check your email to verify your account", Toast.LENGTH_LONG).show();
+                    }
+                } else {
                     Toast.makeText(login_activity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();             }
             }
         });
