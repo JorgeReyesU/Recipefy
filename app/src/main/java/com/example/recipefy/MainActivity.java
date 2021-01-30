@@ -23,9 +23,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loginbtn = findViewById(R.id.login_btn);
         loginbtn.setOnClickListener(this);
 
-
-
-
     }
 
 
