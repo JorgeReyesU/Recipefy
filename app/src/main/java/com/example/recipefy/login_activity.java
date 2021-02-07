@@ -91,7 +91,10 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
                 if (task.isSuccessful()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user.isEmailVerified()) {
-                        startActivity(new Intent(login_activity.this, MainMenu.class));
+                        Intent newIntent = new Intent(login_activity.this, MainMenu.class);
+                        newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(newIntent);
+                        finish();
                     } else {
                         user.sendEmailVerification();
                         Toast.makeText(login_activity.this, "Check your email to verify your account", Toast.LENGTH_LONG).show();
