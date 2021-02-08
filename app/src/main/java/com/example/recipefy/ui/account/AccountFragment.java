@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +23,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
 
 public class AccountFragment extends Fragment {
 
     private  Button btnLogout;
+    private ImageView image;
 
     private FirebaseUser user;
     private DatabaseReference reference;
@@ -37,21 +41,24 @@ public class AccountFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_account, container, false);
 
-
+        image = root.findViewById(R.id.home_images);
         btnLogout = root.findViewById(R.id.BtnLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             FirebaseAuth.getInstance().signOut();
-                                             startActivity(new Intent(getActivity(), MainActivity.class));
-
-
-                                         }
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent newIntent = new Intent(getActivity(), MainActivity.class);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(newIntent);
+            }
         });
+       //  FirebaseStorage store = FirebaseStorage.getInstance().getReference('gs://recipefy-1e6ba.appspot.com/Recipe/');
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         userID = user.getUid();
+
+
 
         final TextView greetingTextView = (TextView) root.findViewById(R.id.greeting);
         final TextView fullNameTextView = (TextView) root.findViewById(R.id.fullName);
@@ -72,6 +79,8 @@ public class AccountFragment extends Fragment {
                     fullNameTextView.setText(fullName);
                     emailTextView.setText(email);
                     nickTextView.setText(nickname);
+                    Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/recipefy-1e6ba.appspot.com/o/Recipe%2F2d288b6e-e0ef-4b5e-9859-8591ee2b8780?alt=media&token=bf1fcd21-d03a-4675-9912-ee72b248d74b").into(image);
+
                 }
             }
 
